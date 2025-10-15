@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import FormContainer from '../components/FormContainer';
 import CheckoutSteps from '../components/CheckoutSteps';
 import Meta from '../components/Meta';
+
 const Payment = () => {
   const [paymentMethod, setPaymentMethod] = useState('Razorpay');
 
@@ -25,6 +26,7 @@ const Payment = () => {
     dispatch(savePaymentMethod(paymentMethod));
     navigate('/place-order');
   };
+
   return (
     <FormContainer>
       <CheckoutSteps step1 step2 step3 />
@@ -41,9 +43,19 @@ const Payment = () => {
               label='Razorpay'
               name='paymentMethod'
               value='Razorpay'
-              checked
+              checked={paymentMethod === 'Razorpay'}
               onChange={e => setPaymentMethod(e.target.value)}
-            ></Form.Check>
+            />
+            <Form.Check
+              className='my-2'
+              type='radio'
+              id='PayOnDelivery'
+              label='Pay on Delivery'
+              name='paymentMethod'
+              value='PayOnDelivery'
+              checked={paymentMethod === 'PayOnDelivery'}
+              onChange={e => setPaymentMethod(e.target.value)}
+            />
           </Col>
         </Form.Group>
         <Button className='mb-3 w-100' variant='warning' type='submit'>
