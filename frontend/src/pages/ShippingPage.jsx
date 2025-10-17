@@ -68,17 +68,6 @@ const ShippingPage = () => {
             onChange={e => setPostalCode(e.target.value)}
           />
         </Form.Group>
-        <Form.Group className='mb-3' controlId='postalCode'>
-          <Form.Label>PHONE NO:</Form.Label>
-          <Form.Control
-            value={phone}
-            type='text'
-            minLength={10}
-            maxLength={10}
-            required
-            placeholder='Enter PHONE NO'
-            onChange={e => setphone(e.target.value)}
-          />
         </Form.Group>
         <Form.Group className='mb-3' controlId='country'>
           <Form.Label>Country</Form.Label>
