@@ -65,7 +65,7 @@ const ShippingPage = () => {
             placeholder='Enter city'
             onChange={e => setPostalCode(e.target.value)}
           />
-        </Form.Group>
+        
         </Form.Group>
         <Form.Group className='mb-3' controlId='country'>
           <Form.Label>Country</Form.Label>
