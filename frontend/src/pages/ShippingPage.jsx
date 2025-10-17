@@ -15,9 +15,7 @@ const ShippingPage = () => {
   const [postalCode, setPostalCode] = useState(
     shippingAddress.postalCode || ''
   );
-  const [phone, setphone] = useState(
-    shippingAddress.phone || ''
-  );
+  
   const [country, setCountry] = useState(shippingAddress.country || '');
 
   const dispatch = useDispatch();
@@ -30,7 +28,7 @@ const ShippingPage = () => {
         address,
         city,
         postalCode,
-        country,phone
+        country
       })
     );
     navigate('/payment');
