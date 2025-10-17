@@ -1,42 +1,36 @@
-import express from 'express';import { body, check } from 'express-validator';
+import express from 'express';
 import multer from 'multer';
-import validateRequest from '../middleware/validator.js';
+import { v2 as cloudinary } from 'cloudinary';
+import dotenv from 'dotenv';
+import fs from 'fs';
 
+dotenv.config();
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads');
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${file.fieldname}-${file.originalname}`);
-  }
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const fileFilter = (req, file, cb) => {
-    if (
-    file.mimetype === 'image/png' ||
-    file.mimetype === 'image/jpg' ||
-    file.mimetype === 'image/jpeg'
-  ) {
-    // To accept the file pass `true`, like so:
-    cb(null, true);
-  } else {
-        // To reject this file pass `false`, like so:
-    cb('Images only!');
+const upload = multer({ dest: 'uploads/' });
+
+router.post('/', upload.single('image'), async (req, res) => {
+  try {
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'mern-ecommerce',
+    });
+
+    // Remove temp file after upload
+    fs.unlinkSync(req.file.path);
+
+    res.status(200).json({
+      message: '✅ Image uploaded successfully!',
+      imageUrl: result.secure_url,
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Cloudinary upload failed', details: error.message });
   }
-};
-
-const upload = multer({ storage, fileFilter }).single('image');
-
-router.post('/', upload, (req, res) => {
-  if (!req.file)
-    throw res.status(400).json({error: 'No file uploaded'});
-
-  res.send({
-    message: 'Image uploaded',
-    imageUrl: `/${req.file.path}`
-  });
 });
 
 export default router;
